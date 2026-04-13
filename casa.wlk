@@ -4,6 +4,9 @@ import cuentas.*
 object casa {
     var cuenta = null
     var gastos = 0
+    var viveres = 0
+    var montoReparacion = 0
+    var reparaciones = 0 
 
     method cuenta() {
       return cuenta
@@ -29,6 +32,19 @@ object casa {
 
     method gastosTotales() {
       return gastos
+    }
+
+    method viveres() {
+      return viveres
+    }
+
+    method romper(_monto) {
+        montoReparacion = montoReparacion + _monto
+    }
+
+    method reparar() {
+        self.gastar(montoReparacion)
+        montoReparacion = 0
     }
 
 
