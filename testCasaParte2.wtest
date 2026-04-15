@@ -27,12 +27,13 @@ describe "Cuenta combinada" {
     assert.equals(100, cuentaCombinada.saldo())
    
    
-    casa.gastar(1000)
+    assert.throwsException({casa.gastar(1000)})
     assert.equals(100, cuentaCombinada.saldo())
     assert.equals(280, casa.gastosTotales())
 
 
-    assert.throwsException({cuentaCombinada.extraer(1000)})
+  
+
     
 
 

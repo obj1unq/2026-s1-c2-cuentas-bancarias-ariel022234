@@ -2,6 +2,17 @@
 
 object cuentaCorriente {
    var saldo = 0
+   var pago = false
+
+   method pagoEfectuado() {
+     return pago
+   }
+
+   method cambioPago(booleano) {
+     pago = booleano
+   }
+
+
 
    method saldo() {
      return saldo
@@ -12,6 +23,7 @@ object cuentaCorriente {
    }
 
    method extraer(_cantidad) {
+     pago = true
      saldo = saldo - _cantidad
    }
 }
@@ -19,6 +31,15 @@ object cuentaCorriente {
 object cuentaConGastos {
     var saldo = 0 
     var costoOperacion = 0
+    var pago = false
+
+     method pagoEfectuado() {
+     return pago
+   }
+
+   method cambioPago(booleano) {
+     pago = booleano
+   }
 
     method saldo() {
       return saldo
@@ -39,6 +60,7 @@ object cuentaConGastos {
     }
 
     method extraer(_cantidad) {
+         pago = true
          saldo = saldo - _cantidad
     }
 
@@ -47,8 +69,14 @@ object cuentaConGastos {
 object cuentaCombinada {
     var cuentaPrimaria = null
     var cuentaSecundaria = null
+    var pago = false
 
     /*Consultas */
+
+     method pagoEfectuado() {
+     return pago
+   }
+
     method saldo() {
       return 0.max(cuentaPrimaria.saldo()) + 0.max(cuentaSecundaria.saldo())
     }
@@ -76,10 +104,15 @@ object cuentaCombinada {
         cuentaPrimaria.depositar(_monto)
     }
 
+    method cambioPago(booleano) {
+     pago = booleano
+   }
+
     
     method extraer(_monto) {
        if (self.saldo() >= _monto) {
         self.extraerDeCuentas(_monto)
+        pago = true
        }
        else {
         self.error("Sin Saldo" + self.saldo())

@@ -7,29 +7,46 @@ object casa {
     var viveres = 0
     var montoReparacion = 0
     var reparaciones = 0 
+    var estrategia = null
    
    
     /* Gestion de cuenta  */
+    method setEstrategia(_estrategia) {
+      estrategia = _estrategia
+    }
+
     method cuenta() {
       return cuenta
     }
 
     method nuevoMes() {
       gastos = 0
+      self.mantenimiento()
+    }
+
+    method mantenimiento() {
+          estrategia.aplicar()
     }
 
     method setCuenta(_cuenta) {
       cuenta = _cuenta
     }
 
+
+
     method gastar(cantidad) {
-        if(cuenta.saldo() >= cantidad){
-            cuenta.extraer(cantidad)
-            gastos = gastos + cantidad
-        }
-        else {
-            gastos = gastos + 0
-        }
+        cuenta.extraer(cantidad)
+        self.sumarGasto(cantidad)
+    }
+
+    method sumarGasto(cantidad) {
+      if (cuenta.pagoEfectuado()) {
+        gastos = gastos + cantidad
+        cuenta.cambioPago(false)
+      }
+      else {
+        gastos = gastos + 0
+      }
     }
 
     method gastosTotales() {
@@ -56,7 +73,7 @@ object casa {
             viveres = viveres + porcentaje
       }
       else {
-        self.error("Sin saldo en cuenta" + cuenta.saldo())
+        self.error("Viveres supera el maximo:" + self.viveres())
       }
     }
 
@@ -94,6 +111,8 @@ object casa {
     method casaEnOrden() {
       return not self.hayQueHacerReparaciones() && self.hayViveresSuficientes()
     }
+
+
 
 
 
