@@ -8,6 +8,10 @@ object cuentaCorriente {
      return pago
    }
 
+   method puedePagar(monto) {
+     return true
+   }
+
    method cambioPago(booleano) {
      pago = booleano
    }
@@ -35,6 +39,10 @@ object cuentaConGastos {
 
      method pagoEfectuado() {
      return pago
+   }
+
+   method puedePagar(monto) {
+     return true
    }
 
    method cambioPago(booleano) {
@@ -72,6 +80,9 @@ object cuentaCombinada {
     var pago = false
 
     /*Consultas */
+    method puedePagar(monto) {
+      return self.saldo() >= monto
+    }
 
      method pagoEfectuado() {
      return pago

@@ -1,7 +1,13 @@
+import estrategiasDeAhorro.*
 import casa.*
 import cuentas.*
 
+
 describe "Cuenta Corriente y Con Gastos" {
+  method initialize() {
+    casa.setEstrategia(estrategiaMinEInd)
+    casa.setViveres(100)
+  }
   test "Cuenta Corriente" {
     casa.setCuenta(cuentaCorriente)
     cuentaCorriente.depositar(300)

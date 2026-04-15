@@ -3,16 +3,30 @@ import cuentas.*
 
 
 object estrategiaMinEInd {
-    var calidad = null 
+    var calidad = null
 
+    method costoManteminiento() {
+       if (not casa.hayViveresSuficientes()) {
+            return (40 - casa.viveres())*calidad
+            }
+        else {
+            return 0
+            }
+    }
+
+    
 
     method aplicar() {
         if (not casa.hayViveresSuficientes()) {
-            //Logica de comprar viveres
-            //Para alcanzar los 40%, restar 40 - casa.viveres() 
+            casa.gastar((40 - casa.viveres())*calidad)
+            casa.setViveres(40 - casa.viveres())
+
+            
         }
         else {
-            //No hace nada y queda todo como esta 
+            casa.setViveres(casa.viveres())
+
+
         }
     }
     method setCalidad(_calidad) {
@@ -21,18 +35,64 @@ object estrategiaMinEInd {
 }
 
 object estrategiaFull {
-  method aplicar() {
-    if(casa.casaEnOrden()) {
-            //Logica de compra
-            /* Para llevar los viveres al cien hacer un metodo con la logica de si (casa.viveres() < 100)
-            entonces se le resta a 100 la cantidad de viveres y eso es lo que hay que comprar
-            para llegar a 100 sino, si es >= no hace nada y queda todo como esta. 
-            */
+  
+  method costoManteminiento() {
+       if(casa.casaEnOrden()) {
+        return (100 - casa.viveres())*5
     }
     else {
-        // Logica en caso contrario
-        // mehtod que maneje de comprar viveres si estan a menos de 40
-        // method para hacer reparaciones si hay para hacer alguna y si hay saldo en cuenta
+        return (40 - casa.viveres())*5
+       
+    }
+    }
+
+
+  method aplicar() {
+    if(casa.casaEnOrden()) {
+        self.comprarViveres()
+    }
+    else {
+        
+        self.comprarPocosViveres()
+        self.reparacionesSiSePuede()
+       
+    }
+
+  }
+
+  method reparacionesSiSePuede() {
+    if (self.puedoReparar()) {
+        casa.gastar(casa.montoReparacion())
+        casa.setReparaciones(0)
+    }
+    else {
+        casa.setReparaciones(casa.reparaciones())
     }
   }
+
+  method puedoReparar() {
+    return casa.cuenta().saldo() >= casa.montoReparacion() && casa.hayQueHacerReparaciones()
+  }
+
+  method comprarPocosViveres() {
+    if (not casa.hayViveresSuficientes()) {
+        casa.gastar((40 - casa.viveres())*5)
+    }
+    else {
+        casa.setViveres(casa.viveres())
+    }
+  }
+
+
+  method comprarViveres() {
+    if (casa.viveres() < 100) {
+        casa.gastar((100 - casa.viveres())*5)
+        casa.setViveres(100 - casa.viveres())
+    }
+    else {
+        casa.setViveres(casa.viveres())
+         }
+    
+  }
 }
+

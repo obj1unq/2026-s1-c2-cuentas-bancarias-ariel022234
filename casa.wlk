@@ -20,8 +20,13 @@ object casa {
     }
 
     method nuevoMes() {
-      gastos = 0
-      self.mantenimiento()
+      if (cuenta.puedePagar(estrategia.costoManteminiento())) {
+        self.mantenimiento()
+        gastos = 0
+      }
+      else {
+        gastos = 0
+      }
     }
 
     method mantenimiento() {
@@ -94,6 +99,10 @@ object casa {
 
     method montoReparacion() {
       return montoReparacion
+    }
+
+    method setReparaciones(cant) {
+      reparaciones = cant
     }
 
     method reparar() {
