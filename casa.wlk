@@ -20,7 +20,7 @@ object casa {
     }
 
     method nuevoMes() {
-      if (cuenta.puedePagar(estrategia.costoManteminiento())) {
+      if (cuenta.puedePagar(estrategia.costoEstrategia())) {
         self.mantenimiento()
         gastos = 0
       }
@@ -41,18 +41,9 @@ object casa {
 
     method gastar(cantidad) {
         cuenta.extraer(cantidad)
-        self.sumarGasto(cantidad)
+        gastos = gastos + cantidad
     }
 
-    method sumarGasto(cantidad) {
-      if (cuenta.pagoEfectuado()) {
-        gastos = gastos + cantidad
-        cuenta.cambioPago(false)
-      }
-      else {
-        gastos = gastos + 0
-      }
-    }
 
     method gastosTotales() {
       return gastos
@@ -65,7 +56,12 @@ object casa {
     }
 
     method setViveres(porcentaje) {
-      viveres = porcentaje
+      if (100 > viveres + porcentaje) {
+        self.error("La casa esta llena de viveres" + self.viveres())
+      }
+      else {
+        viveres = viveres + porcentaje
+      }
     }
 
     method puedeComprarViveres(porcentaje) {

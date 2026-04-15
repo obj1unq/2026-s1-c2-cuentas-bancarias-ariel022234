@@ -5,7 +5,7 @@ import cuentas.*
 object estrategiaMinEInd {
     var calidad = null
 
-    method costoManteminiento() {
+    method costoEstrategia() {
        if (not casa.hayViveresSuficientes()) {
             return (40 - casa.viveres())*calidad
             }
@@ -20,14 +20,7 @@ object estrategiaMinEInd {
         if (not casa.hayViveresSuficientes()) {
             casa.gastar((40 - casa.viveres())*calidad)
             casa.setViveres(40 - casa.viveres())
-
-            
-        }
-        else {
-            casa.setViveres(casa.viveres())
-
-
-        }
+             }
     }
     method setCalidad(_calidad) {
       calidad = _calidad
@@ -36,7 +29,7 @@ object estrategiaMinEInd {
 
 object estrategiaFull {
   
-  method costoManteminiento() {
+  method costoEstrategia() {
        if(casa.casaEnOrden()) {
         return (100 - casa.viveres())*5
     }
@@ -54,20 +47,16 @@ object estrategiaFull {
     else {
         
         self.comprarPocosViveres()
-        self.reparacionesSiSePuede()
+        self.reparaciones()
        
     }
 
   }
 
-  method reparacionesSiSePuede() {
-    if (self.puedoReparar()) {
+  method reparaciones() {
         casa.gastar(casa.montoReparacion())
         casa.setReparaciones(0)
-    }
-    else {
-        casa.setReparaciones(casa.reparaciones())
-    }
+
   }
 
   method puedoReparar() {
@@ -78,9 +67,6 @@ object estrategiaFull {
     if (not casa.hayViveresSuficientes()) {
         casa.gastar((40 - casa.viveres())*5)
     }
-    else {
-        casa.setViveres(casa.viveres())
-    }
   }
 
 
@@ -89,9 +75,6 @@ object estrategiaFull {
         casa.gastar((100 - casa.viveres())*5)
         casa.setViveres(100 - casa.viveres())
     }
-    else {
-        casa.setViveres(casa.viveres())
-         }
     
   }
 }

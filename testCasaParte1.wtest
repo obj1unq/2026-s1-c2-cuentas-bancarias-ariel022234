@@ -20,6 +20,7 @@ describe "Cuenta Corriente y Con Gastos" {
     assert.equals(600, casa.gastosTotales())
     casa.nuevoMes()
     assert.equals(0, casa.gastosTotales())
+  
     
   }
 }

@@ -2,24 +2,13 @@
 
 object cuentaCorriente {
    var saldo = 0
-   var pago = false
 
-   method pagoEfectuado() {
-     return pago
+   method saldo() {
+     return saldo
    }
 
    method puedePagar(monto) {
      return true
-   }
-
-   method cambioPago(booleano) {
-     pago = booleano
-   }
-
-
-
-   method saldo() {
-     return saldo
    }
 
    method depositar(monto) {
@@ -27,7 +16,6 @@ object cuentaCorriente {
    }
 
    method extraer(_cantidad) {
-     pago = true
      saldo = saldo - _cantidad
    }
 }
@@ -35,22 +23,14 @@ object cuentaCorriente {
 object cuentaConGastos {
     var saldo = 0 
     var costoOperacion = 0
-    var pago = false
 
-     method pagoEfectuado() {
-     return pago
-   }
-
-   method puedePagar(monto) {
-     return true
-   }
-
-   method cambioPago(booleano) {
-     pago = booleano
-   }
 
     method saldo() {
       return saldo
+    }
+
+    method puedePagar(monto) {
+      return true
     }
 
     method depositar(monto) {
@@ -68,7 +48,6 @@ object cuentaConGastos {
     }
 
     method extraer(_cantidad) {
-         pago = true
          saldo = saldo - _cantidad
     }
 
@@ -77,16 +56,8 @@ object cuentaConGastos {
 object cuentaCombinada {
     var cuentaPrimaria = null
     var cuentaSecundaria = null
-    var pago = false
 
     /*Consultas */
-    method puedePagar(monto) {
-      return self.saldo() >= monto
-    }
-
-     method pagoEfectuado() {
-     return pago
-   }
 
     method saldo() {
       return 0.max(cuentaPrimaria.saldo()) + 0.max(cuentaSecundaria.saldo())
@@ -100,37 +71,30 @@ object cuentaCombinada {
        return 0.max(cuenta.saldo())
      }
 
+     method puedePagar(monto) {
+        return self.saldo() >= monto
+     }
+
 
     /*Acciones  */
 
-      method setCuentaPrimaria(_cuenta) {
-      cuentaPrimaria = _cuenta
-    }
-
-    method setCuentaSecundaria(_cuenta) {
-      cuentaSecundaria = _cuenta
+      method setCuenta(primaria,secundaria) {
+      cuentaPrimaria = primaria
+      cuentaSecundaria = secundaria
     }
 
     method depositar(_monto) {
         cuentaPrimaria.depositar(_monto)
     }
-
-    method cambioPago(booleano) {
-     pago = booleano
-   }
-
     
-    method extraer(_monto) {
-       if (self.saldo() >= _monto) {
-        self.extraerDeCuentas(_monto)
-        pago = true
-       }
-       else {
+    method validarExtraccion(_monto) {
+       if (self.saldo() < _monto) {
         self.error("Sin Saldo" + self.saldo())
        }
     }
 
-    method extraerDeCuentas(_monto) {
+    method extraer(_monto) {
+      self.validarExtraccion(_monto)
       
       if (_monto <= self.saldoCuenta(cuentaPrimaria)) {
         cuentaPrimaria.extraer(_monto)
