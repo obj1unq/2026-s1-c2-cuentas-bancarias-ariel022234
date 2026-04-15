@@ -48,7 +48,23 @@ object cuentaCombinada {
     var cuentaPrimaria = null
     var cuentaSecundaria = null
 
-    method setCuentaPrimaria(_cuenta) {
+    /*Consultas */
+    method saldo() {
+      return 0.max(cuentaPrimaria.saldo()) + 0.max(cuentaSecundaria.saldo())
+    }
+
+    method haySaldoEn(_cuenta) {
+      return _cuenta.saldo() > 0
+    }
+
+     method saldoCuenta(cuenta) {
+       return 0.max(cuenta.saldo())
+     }
+
+
+    /*Acciones  */
+
+      method setCuentaPrimaria(_cuenta) {
       cuentaPrimaria = _cuenta
     }
 
@@ -60,18 +76,26 @@ object cuentaCombinada {
         cuentaPrimaria.depositar(_monto)
     }
 
-    method saldo() {
-      return 0.max(cuentaPrimaria.saldo()) + 0.max(cuentaSecundaria.saldo())
+    
+    method extraer(_monto) {
+       if (self.saldo() >= _monto) {
+        self.extraerDeCuentas(_monto)
+       }
+       else {
+        self.error("Sin Saldo" + self.saldo())
+       }
     }
 
-    method extraer(_monto) {
-        if (cuentaPrimaria.saldo() <= _monto) {
-            cuentaSecundaria.extraer(_monto - cuentaPrimaria.saldo())
-            cuentaPrimaria.extraer(cuentaPrimaria.saldo())
-            }
-        else {
-            cuentaPrimaria.extraer(_monto)
-        }    
-    }
+    method extraerDeCuentas(_monto) {
+      
+      if (_monto <= self.saldoCuenta(cuentaPrimaria)) {
+        cuentaPrimaria.extraer(_monto)
+      }
+      else {
+        cuentaSecundaria.extraer(_monto - self.saldoCuenta(cuentaPrimaria))
+        cuentaPrimaria.extraer(self.saldoCuenta(cuentaPrimaria))
+        
+      }
+      }
 
 }
