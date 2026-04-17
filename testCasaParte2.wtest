@@ -6,8 +6,7 @@ describe "Cuenta combinada" {
   /*seteo de todo  */
   method initialize() {
     casa.setCuenta(cuentaCombinada)
-    cuentaCombinada.setCuentaPrimaria(cuentaConGastos)
-    cuentaCombinada.setCuentaSecundaria(cuentaCorriente)
+    cuentaCombinada.setCuenta(cuentaConGastos, cuentaCorriente)
     cuentaConGastos.setCostoOperacion(20)
     cuentaCorriente.depositar(300)
     
