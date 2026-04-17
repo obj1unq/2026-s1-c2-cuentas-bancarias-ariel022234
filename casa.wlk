@@ -56,7 +56,7 @@ object casa {
     }
 
     method setViveres(porcentaje) {
-      if (100 > viveres + porcentaje) {
+      if (100 < viveres + porcentaje) {
         self.error("La casa esta llena de viveres" + self.viveres())
       }
       else {
