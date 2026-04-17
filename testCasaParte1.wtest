@@ -1,9 +1,27 @@
+import estrategiasDeAhorro.*
 import casa.*
+import cuentas.*
 
-describe "casa de pepe y julian" {
 
-  // Descomentar si hiciera falta un metodo para inicializar el ambiente
-  // method initialize() {
-  // }
-
+describe "Cuenta Corriente y Con Gastos" {
+  method initialize() {
+    casa.setEstrategia(estrategiaMinEInd)
+    casa.setViveres(100)
+  }
+  test "Cuenta Corriente" {
+    casa.setCuenta(cuentaCorriente)
+    cuentaCorriente.depositar(300)
+    assert.equals(0, casa.gastosTotales())
+    casa.gastar(200)
+    assert.equals(100, cuentaCorriente.saldo())
+    assert.equals(200, casa.gastosTotales())
+    casa.gastar(400)
+    assert.equals(-300, cuentaCorriente.saldo())
+    assert.equals(600, casa.gastosTotales())
+    casa.nuevoMes()
+    assert.equals(0, casa.gastosTotales())
+  
+    
+  }
 }
+

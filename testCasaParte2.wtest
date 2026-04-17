@@ -1,0 +1,46 @@
+import casa.*
+import cuentas.*
+
+
+describe "Cuenta combinada" {
+  /*seteo de todo  */
+  method initialize() {
+    casa.setCuenta(cuentaCombinada)
+    cuentaCombinada.setCuenta(cuentaConGastos, cuentaCorriente)
+    cuentaConGastos.setCostoOperacion(20)
+    cuentaCorriente.depositar(300)
+    
+  }
+  test "Gastos con la cuenta Combinada" {
+    
+    cuentaCombinada.depositar(100)
+    assert.equals(380, cuentaCombinada.saldo())
+    assert.equals(80, cuentaConGastos.saldo())
+    
+    casa.gastar(280)
+    assert.equals(280, casa.gastosTotales())
+    assert.equals(100, cuentaCombinada.saldo())
+    assert.equals(0, cuentaConGastos.saldo())
+    assert.equals(100, cuentaCorriente.saldo())
+    cuentaCombinada.depositar(10)
+    assert.equals(100, cuentaCombinada.saldo())
+   
+   
+    assert.throwsException({casa.gastar(1000)})
+    assert.equals(100, cuentaCombinada.saldo())
+    assert.equals(280, casa.gastosTotales())
+
+
+  
+
+    
+
+
+   
+
+
+
+
+    
+    }
+}
